@@ -21,3 +21,8 @@ Next, we're going create PPM output using D2 (Output Pin for PPM) which we will 
 	
 d. Use "Read_FsiA6B_Using_Arduino_Nano_And_Send_Signal_To_Pixhawk.ino" code to control drone using "Overrided" FSiA6B. This is working code now. Use
 this for experiment
+
+e. This is useful link that help me to comeout with this solution
+
+### https://matgyver.my/2021/06/15/arduino-baca-signal-ppm-remote-rc-receiver/
+### https://miscircuitos.com/how-to-read-rc-radio-signals-with-arduino-using-ppm-signal-tutorials/

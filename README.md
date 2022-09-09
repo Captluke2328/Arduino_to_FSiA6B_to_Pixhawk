@@ -26,3 +26,5 @@ e. This is useful link that help me to comeout with this solution
 
 ### https://matgyver.my/2021/06/15/arduino-baca-signal-ppm-remote-rc-receiver/
 ### https://miscircuitos.com/how-to-read-rc-radio-signals-with-arduino-using-ppm-signal-tutorials/
+## https://quadmeup.com/generate-ppm-signal-with-arduino/
+

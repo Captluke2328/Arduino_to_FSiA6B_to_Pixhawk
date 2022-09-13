@@ -1,26 +1,28 @@
 #include <PPMReader.h>
 
-#define CHANNEL_DEFAULT_VALUE 1500
+// #define CHANNEL_DEFAULT_VALUE 1500
 int interruptPin = 3;
 
 #define channelAmount 6
 int CH[channelAmount];
 
 #define sigPin 2          //set PPM signal output pin on the arduino
-#define PPM_FrLen 22500   //set the PPM frame length in microseconds (1ms = 1000µs)
-#define PPM_PulseLen 300 //set the pulse length
+#define PPM_FrLen 27000   //22500   //set the PPM frame length in microseconds (1ms = 1000µs)
+#define PPM_PulseLen 400 //300 //set the pulse length
+#define onState 1
 
 PPMReader ppm(interruptPin, channelAmount); //PPM Library Object
 
 void setup() {
   Serial.begin(115200);
 
-  for(int i=1; i<channelAmount; i++)
-  {
-      CH[i-1]= CHANNEL_DEFAULT_VALUE;
-  }
+  // for(int i=1; i<channelAmount; i++)
+  // {
+  //     CH[i-1]= CHANNEL_DEFAULT_VALUE;
+  // }
 
   pinMode(sigPin, OUTPUT);
+  digitalWrite(sigPin, !onState); 
 
   //Configure the interruption registers that will create the PPM signal
   cli();
@@ -35,6 +37,10 @@ void setup() {
 
 }
 
+void loop() {
+  PPM_width_values();
+}
+
 void PPM_width_values()
 {
   // for (int i=1; i<=channelAmount; i++)
@@ -43,12 +49,15 @@ void PPM_width_values()
   // }
 
   /***DAPATKAN MAKLUMAT PPM UNTUK SETIAP CHANNEL***/
-   CH[0] = ppm.latestValidChannelValue(1, 2006);
-   CH[1] = ppm.latestValidChannelValue(2, 1050);
-   CH[2] = ppm.latestValidChannelValue(3, 2008); //modify this value according to Radio Calibration value which in this case is Max
-   CH[3] = ppm.latestValidChannelValue(4, 2006);
-   CH[4] = ppm.latestValidChannelValue(5, 0);
-   CH[5] = ppm.latestValidChannelValue(6, 0);
+   CH[0] = ppm.latestValidChannelValue(1, 1900);
+   CH[1] = ppm.latestValidChannelValue(2, 1900);
+   //CH[2] = map(ppm.latestValidChannelValue(3, 1900),1052,1900,1046,1900); //modify this value according to Radio Calibration value which in this case is Max
+   CH[2] = ppm.latestValidChannelValue(3, 1900); //modify this value according to Radio Calibration value which in this case is Max
+
+   CH[3] = ppm.latestValidChannelValue(4, 1900);
+   CH[4] = ppm.latestValidChannelValue(5, 1900);
+   CH[5] = ppm.latestValidChannelValue(6, 1900);
+
   /***DAPATKAN MAKLUMAT PPM UNTUK SETIAP CHANNEL***/
 
   //LAKUKAN SEBARANG AKTIVITI PROJECT SELEPAS DATA CHANNEL DITERIMA
@@ -76,19 +85,6 @@ void PPM_width_values()
   Serial.print(CH[5]);
   Serial.println();
   
-}
-
-void reset_received_Data()
-{
-    for(int i=1; i<channelAmount; i++)
-  {
-      CH[i-1]= CHANNEL_DEFAULT_VALUE;
-  }
-
-}
-
-void loop() {
-  PPM_width_values();
 }
 
 
@@ -126,8 +122,7 @@ ISR(TIMER1_COMPA_vect){
 
     else {
       OCR1A = (CH[cur_chan_numb] - PPM_PulseLen) * clockMultiplier;
-      //OCR1A = (CH[cur_chan_numb]);
-
+      //OCR1A = (CH[cur_chan_numb]) * clockMultiplier;
       calc_rest += CH[cur_chan_numb];
       cur_chan_numb++;
     }     

@@ -1,3 +1,14 @@
+/*
+
+Author : Lukas Johnny
+Date : 14-September-2022
+Description : Use Arduino Nano to read PPM value for Fs-iA6B receiver. Below is designation for each channel
+             CH1 : Roll Input
+             CH2 : Pitch Input
+             CH3 : Throttle Input
+             Ch4 : Yaw Input
+*/
+
 #include <PPMReader.h>
 
 int interruptPin = 3;
